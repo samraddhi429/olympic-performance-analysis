@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Global Olympic Sports Performance Analysis</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--text:#1b1f2a;--muted:#667085;--line:#e4e7ee;--a:#0b6bcb;--b:#e5484d;--c:#2e9e6a;--d:#f0a020;
+color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12141a;--card:#1b1e27;--text:#eef0f6;--muted:#9aa3b5;--line:#2a2e3a;--a:#4c9aff;--b:#ff6b70;--c:#4cc38a;--d:#ffbf47;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12141a;--card:#1b1e27;--text:#eef0f6;--muted:#9aa3b5;--line:#2a2e3a;--a:#4c9aff;--b:#ff6b70;--c:#4cc38a;--d:#ffbf47;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+main{max-width:1000px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:1.6rem;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 20px}
+.kpis,.grid{display:grid;gap:14px}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:14px}
+.grid{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.kpi b{display:block;font-size:1.6rem}
+.kpi span,.card p{color:var(--muted);font-size:.85rem;margin:0}
+h2{font-size:1rem;margin:0 0 4px}
+.row{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:.9rem}
+.row .n{width:110px;flex:none}
+.row .t{flex:1;background:var(--line);border-radius:6px;height:20px;overflow:hidden}
+.row .t i{display:block;height:100%;border-radius:6px}
+.row .v{width:58px;text-align:right;font-variant-numeric:tabular-nums}
+footer{margin-top:20px;color:var(--muted);font-size:.8rem}
+</style>
+</head>
+<body>
+<main>
+<h1>Global Olympic Sports Performance Analysis</h1>
+<p class="sub">Summer and Winter Games, 1992–2026 · 60 countries · 50 sports</p>
+<div class="kpis" id="kpis"></div>
+<div class="grid" id="charts"></div>
+<footer>Figures shown are those stated in the project brief. Connect the full athletes and medal_results datasets to extend each chart.</footer>
+</main>
+<script>
+var kpis=[["735","USA total medals"],["696","China total medals"],["363","Peak yearly medals (2020)"],["49.64%","Top regional efficiency (South America)"]];
+var charts=[
+{t:"Avg medals per athlete by sport category",s:"Higher means more medals per athlete",c:"--a",d:[["Rowing",6.916],["Shooting",6.731]],f:function(v){return v.toFixed(3)}},
+{t:"Total medals by country",s:"Global performance metrics",c:"--b",d:[["United States",735],["China",696]],f:function(v){return v}},
+{t:"Medal totals across Olympic hosts",s:"Home-advantage view",c:"--c",d:[["Japan",105],["United States",100],["China",93]],f:function(v){return v}},
+{t:"Total medals awarded by year",s:"Low in 2000, peak in 2020",c:"--d",d:[["2000",305],["2020",363],["2026",334]],f:function(v){return v}},
+{t:"Average medal efficiency by region",s:"Percent",c:"--a",d:[["South America",49.64],["Europe/Asia",45.98]],f:function(v){return v.toFixed(2)+"%"},m:100}
+];
+document.getElementById("kpis").innerHTML=kpis.map(function(k){return '<div class="card kpi"><b>'+k[0]+'</b><span>'+k[1]+'</span></div>'}).join("");
+document.getElementById("charts").innerHTML=charts.map(function(c){
+var max=c.m||Math.max.apply(null,c.d.map(function(x){return x[1]}));
+return '<div class="card"><h2>'+c.t+'</h2><p>'+c.s+'</p>'+c.d.map(function(x){
+return '<div class="row"><span class="n">'+x[0]+'</span><span class="t"><i style="width:'+(x[1]/max*100)+'%;background:var('+c.c+')"></i></span><span class="v">'+c.f(x[1])+'</span></div>'}).join("")+'</div>'}).join("");
+</script>
+</body>
+</html>
